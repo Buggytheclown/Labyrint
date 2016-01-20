@@ -21,6 +21,7 @@ config_num = {'height': 2, 'width': 4}
 config_C = {'height': 2, 'width': 4, 'bg': 'red'}
 config_res = {'height': 2, 'width': 4, 'bg': 'green'}
 '''
+History
 lab_history = Frame()
 lab2 = Text(lab_history, height=3)
 lab2.pack(side=TOP, fill=X, expand=1)
@@ -86,14 +87,14 @@ def add_dot():
             stuck0 += '.'
             displaed.set(stuck0)
         else:
-            showerror('warning', 'decimal my contain only 1 dot')
+            showerror('warning', 'number may contain only 1 dot')
     else:
         global stuck1
         if '.' not in stuck0:
             stuck1 += '.'
             displaed.set(stuck1)
         else:
-            showerror('warning', 'decimal my contain only 1 dot')
+            showerror('warning', 'number may contain only 1 dot')
 
 
 dot_but = Button(OtherFr, text='.', command=add_dot, **config_num)
@@ -256,11 +257,12 @@ def clearallUP(event):
 OtherFr.bind('<Key>', upres)
 OtherFr.bind("<Escape>", clearallUP)
 OtherFr.bind("<Return>", resUP)
-#backspace didnt realise
+# backspace didnt realise
 OtherFr.focus_set()
 
 # func from Menu
 menubar = Menu(root)
+config_color = {}
 
 
 def accept_func():
@@ -269,11 +271,22 @@ def accept_func():
     for i in buttons:
         i.config(height=but_height.get(), width=but_width.get())
 
+    for i in buttons[:11]:
+        loc_bg=config_color.get('num_BG')
+        loc_fg=config_color.get('num_FG')
+        i.config(bg=loc_bg, fg=loc_fg)
+
+
+def choose_color(but_id):
+    global config_color
+    loc_color = askcolor()
+    config_color[but_id] = loc_color[1]
 
 
 def do_config():
     # resolutions - scHW
     TLconf = Toplevel()
+    TLconf.grab_set()
     TLconf.title('configure')
     scHW = Frame(TLconf)
     scHW.grid(row=0, column=0)
@@ -282,6 +295,7 @@ def do_config():
     global but_height
     scHeight = Scale(scHW, variable=but_height, label='But_Height', from_=1, to=20, orient=VERTICAL)
     scHeight.pack(side=LEFT)
+    scHeight.set(2)
 
     scWidth = Scale(scHW, variable=but_width, label='But_Width', from_=1, to=50, orient=HORIZONTAL)
     scWidth.pack(side=BOTTOM)
@@ -292,17 +306,20 @@ def do_config():
     Label(colorschem, text='Button Color').grid(row=0, column=0)
     # conf Color
     Label(colorschem, text='Number Color').grid(row=1, column=0)
-    Button(colorschem, text='FG Color').grid(row=1, column=1)
-    Button(colorschem, text='BG Color').grid(row=1, column=2)
+    Button(colorschem, text='FG Color', command=lambda: choose_color('num_FG')).grid(row=1, column=1)
+    Button(colorschem, text='BG Color', command=lambda: choose_color('num_BG')).grid(row=1, column=2)
+
     Label(colorschem, text='Res_But Color').grid(row=2, column=0)
-    Button(colorschem, text='FG Color').grid(row=2, column=1)
-    Button(colorschem, text='BG Color').grid(row=2, column=2)
+    Button(colorschem, text='FG Color', state=DISABLED).grid(row=2, column=1)
+    Button(colorschem, text='BG Color', state=DISABLED).grid(row=2, column=2)
+
     Label(colorschem, text='C and CE_But Color').grid(row=3, column=0)
-    Button(colorschem, text='FG Color').grid(row=3, column=1)
-    Button(colorschem, text='BG Color').grid(row=3, column=2)
+    Button(colorschem, text='FG Color', state=DISABLED).grid(row=3, column=1)
+    Button(colorschem, text='BG Color', state=DISABLED).grid(row=3, column=2)
+
     Label(colorschem, text='The other_But Color').grid(row=4, column=0)
-    Button(colorschem, text='FG Color').grid(row=4, column=1)
-    Button(colorschem, text='BG Color').grid(row=4, column=2)
+    Button(colorschem, text='FG Color', state=DISABLED).grid(row=4, column=1)
+    Button(colorschem, text='BG Color', state=DISABLED).grid(row=4, column=2)
     # accept, cancel - okcan
     okcan = Frame(TLconf)
     okcan.grid(row=1, column=1)
