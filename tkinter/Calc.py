@@ -6,8 +6,6 @@ root = Tk()
 root.title('TiCalc')
 displaed = StringVar()
 displaed.set('0')
-history = StringVar()
-history.set('')
 stuck0 = ''
 stuck1 = ''
 flag = 0
@@ -20,16 +18,19 @@ config = {'height': 2, 'width': 4, 'bg': 'grey'}
 config_num = {'height': 2, 'width': 4}
 config_C = {'height': 2, 'width': 4, 'bg': 'red'}
 config_res = {'height': 2, 'width': 4, 'bg': 'green'}
-'''
-History
+
+
+hist_displ = StringVar()
+hist_displ.set('0')
+hist_stuck=['\n','\n','\n']
 lab_history = Frame()
-lab2 = Text(lab_history, height=3)
+lab2 = Label(lab_history, textvariable=hist_displ, anchor=N, height=3,font=("Helvetica", 10))
 lab2.pack(side=TOP, fill=X, expand=1)
 lab_history.pack(side=TOP, fill=X)
 
 separotor = Frame(height=20, bg="grey")
 separotor.pack(side=TOP, fill=X)
-'''
+
 lab_display = Frame()
 lab1 = Label(lab_display, textvariable=displaed, justify=LEFT, font=("Helvetica", 16))
 lab1.pack(side=TOP, fill=X, expand=1)
@@ -207,9 +208,17 @@ def res():
     try:
         global stuck0
         global stuck1
+        global hist_stuck
         if stuck0 and stuck1 and opperation:
             locres = eval(stuck0 + opperation + stuck1)
             displaed.set(locres)
+            loc_stuck=''
+            loc_stuck+=stuck0 + opperation + stuck1+'='+str(locres)+'\n'
+            hist_stuck.append(loc_stuck)
+            loc_show_hist=''
+            for i in hist_stuck[-3:]:
+                loc_show_hist+=i
+            hist_displ.set(loc_show_hist)
             stuck0 = ''
             stuck1 = ''
             global flag
@@ -222,6 +231,17 @@ def res():
 Res_but = Button(OtherFr, text='=', command=res, **config_res)
 Res_but.grid(row=5, column=2)
 
+def show_history ():
+    hist_tl=Toplevel()
+    hist_text=Text(hist_tl)
+    hist_text.pack()
+    loc_his=''
+    for i in hist_stuck[3:]:
+        loc_his+=i
+    hist_text.insert(1.0, loc_his)
+
+hist_but=Button(OtherFr, text='History', **config_num, command=show_history)
+hist_but.grid (row=1, column=3)
 
 # bind method
 def upres(event):
