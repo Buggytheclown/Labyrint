@@ -19,12 +19,11 @@ config_num = {'height': 2, 'width': 4}
 config_C = {'height': 2, 'width': 4, 'bg': 'red'}
 config_res = {'height': 2, 'width': 4, 'bg': 'green'}
 
-
 hist_displ = StringVar()
 hist_displ.set('0')
-hist_stuck=['\n','\n','\n']
+hist_stuck = ['\n', '\n', '\n']
 lab_history = Frame()
-lab2 = Label(lab_history, textvariable=hist_displ, anchor=N, height=3,font=("Helvetica", 10))
+lab2 = Label(lab_history, textvariable=hist_displ, anchor=N, height=3, font=("Helvetica", 10))
 lab2.pack(side=TOP, fill=X, expand=1)
 lab_history.pack(side=TOP, fill=X)
 
@@ -212,12 +211,12 @@ def res():
         if stuck0 and stuck1 and opperation:
             locres = eval(stuck0 + opperation + stuck1)
             displaed.set(locres)
-            loc_stuck=''
-            loc_stuck+=stuck0 + opperation + stuck1+'='+str(locres)+'\n'
+            loc_stuck = ''
+            loc_stuck += stuck0 + opperation + stuck1 + '=' + str(locres) + '\n'
             hist_stuck.append(loc_stuck)
-            loc_show_hist=''
+            loc_show_hist = ''
             for i in hist_stuck[-3:]:
-                loc_show_hist+=i
+                loc_show_hist += i
             hist_displ.set(loc_show_hist)
             stuck0 = ''
             stuck1 = ''
@@ -231,17 +230,20 @@ def res():
 Res_but = Button(OtherFr, text='=', command=res, **config_res)
 Res_but.grid(row=5, column=2)
 
-def show_history ():
-    hist_tl=Toplevel()
-    hist_text=Text(hist_tl)
+
+def show_history():
+    hist_tl = Toplevel()
+    hist_text = Text(hist_tl)
     hist_text.pack()
-    loc_his=''
+    loc_his = 'This is ur calc_history, be proud of it!\n\n'
     for i in hist_stuck[3:]:
-        loc_his+=i
+        loc_his += i
     hist_text.insert(1.0, loc_his)
 
-hist_but=Button(OtherFr, text='History', **config_num, command=show_history)
-hist_but.grid (row=1, column=3)
+
+hist_but = Button(OtherFr, text='History', **config_num, command=show_history)
+hist_but.grid(row=1, column=3)
+
 
 # bind method
 def upres(event):
@@ -287,13 +289,13 @@ config_color = {}
 
 def accept_func():
     buttons = [b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, dot_but,
-               Cbut, CEbut, Back_but, Sum_but, Min_but, Mult_but, Div_but, Res_but]
+               Cbut, CEbut, Back_but, Sum_but, Min_but, Mult_but, Div_but, Res_but, hist_but]
     for i in buttons:
         i.config(height=but_height.get(), width=but_width.get())
 
     for i in buttons[:11]:
-        loc_bg=config_color.get('num_BG')
-        loc_fg=config_color.get('num_FG')
+        loc_bg = config_color.get('num_BG')
+        loc_fg = config_color.get('num_FG')
         i.config(bg=loc_bg, fg=loc_fg)
 
 
